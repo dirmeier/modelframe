@@ -27,9 +27,9 @@ def load_data():
     Load an example data set: the sleepstudy data from the `lme4` R-package, published in:
 
     @article{,
-        author = {Douglas Bates and Martin Mächler and Ben Bolker and Steve Walker},
-        title = {Fitting Linear Mixed-Effects Models Using lme4},
-        journal = {Journal of Statistical Software, Articles},
+       author = {Douglas Bates and Martin Mächler and Ben Bolker and Steve Walker},
+       title = {Fitting Linear Mixed-Effects Models Using lme4},
+       journal = {Journal of Statistical Software},
        volume = {67},
        number = {1},
        year = {2015},
@@ -46,11 +46,10 @@ def load_data():
     """
     import os
     import pandas as pd
+
     dir, _ = os.path.split(__file__)
     df = pd.read_csv(
         os.path.join(dir, "data", "sleepstudy.csv"),
-        dtype={"Reaction": "float64", "Days": "int64", "Subject": "category"}
+        dtype={"Reaction": "float64", "Days": "int64", "Subject": "category"},
     )
     return df
-
-

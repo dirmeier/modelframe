@@ -21,7 +21,6 @@
 # @author = 'Simon Dirmeier'
 # @email = 'simon.dirmeier@web.de'
 
-
 import numpy as np
 
 

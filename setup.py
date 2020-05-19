@@ -31,18 +31,20 @@ def readme():
 
 
 test_deps = [
+    'black',
     'coverage',
     'pytest>=3.6.2',
     'pytest-cov',
     'pytest-pep8',
-    'unittest'
-    'yapf'
+    'flake8'
 ]
 
 doc_deps = [
     'sphinx',
     'sphinx_fontawesome',
-    'sphinxcontrib-fulltoc'
+    'sphinxcontrib-fulltoc',
+    'jupyter-sphinx',
+    'nbsphinx'
 ]
 
 setup(

@@ -21,7 +21,6 @@
 # @author = 'Simon Dirmeier'
 # @email = 'simon.dirmeier@web.de'
 
-
 import re
 
 import numpy as np
@@ -142,7 +141,7 @@ def _random_effects_model_matrix(covars, factor, data):
     J = pd.get_dummies(pd.Series(data[factor])).values
 
     Z, covars = _fixed_effects_model_matrix(covars, data, True)
-    Z['group'] = data[factor]
+    Z["group"] = data[factor]
 
     Z = Z[covars + ["group"]].pivot(columns="group").reindex()
     Z.values[np.isnan(Z.values)] = 0

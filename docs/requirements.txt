@@ -1,0 +1,5 @@
+nbsphinx
+jupyter-sphinx
+sphinx
+sphinx_fontawesome
+sphinxcontrib-fulltoc

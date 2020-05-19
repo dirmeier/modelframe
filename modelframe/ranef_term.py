@@ -27,6 +27,7 @@ class RandomEffectTerm:
     RandomEffectTerm contains data types for a single random effect, i.e.,
      design matrix, number of variables, and factor matrix.
     """
+
     def __init__(self, Z, J):
         self._Z = Z
         self._J = J

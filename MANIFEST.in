@@ -1,2 +1,2 @@
 include README.rst
-include data/sleepstudy.csv
+include modelframe/data/sleepstudy.csv
