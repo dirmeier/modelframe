@@ -21,3 +21,6 @@
 # @author = 'Simon Dirmeier'
 # @email = 'simon.dirmeier@web.de'
 
+
+from modelframe.linalg import khatri_rao
+from modelframe.modelframe import model_frame

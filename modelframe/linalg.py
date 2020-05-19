@@ -1,4 +1,4 @@
-# modelframe: Compute 
+# modelframe: Compute fixed and random effects model matrices in Python
 #
 # Copyright (C) Simon Dirmeier
 #
@@ -22,18 +22,9 @@
 # @email = 'simon.dirmeier@web.de'
 
 
-
-class modelframe:
-    def __init__(self):
-        self._x = 1
+import numpy as np
 
 
-    @property
-    def x(self):
-        """
-        I am a getter.
-
-
-        """
-
-        return self._x
+def khatri_rao(a, b):
+    c = a[..., :, np.newaxis, :] * b[..., np.newaxis, :, :]
+    return c.reshape((-1,) + c.shape[2:])
