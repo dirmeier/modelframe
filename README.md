@@ -1,32 +1,93 @@
-****************
 modelframe
-****************
+==========
 
-.. image:: http://www.repostatus.org/badges/latest/active.svg
-   :target: http://www.repostatus.org/#active
-.. image:: https://travis-ci.org/dirmeier/modelframe.svg?branch=master
-   :target: https://travis-ci.org/dirmeier/modelframe/
-.. image:: https://codecov.io/gh/dirmeier/modelframe/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/dirmeier/modelframe
-.. image:: https://readthedocs.org/projects/modelframe/badge/?version=latest
-   :target: http://modelframe.readthedocs.io/en/latest/?badge=latest
+[![Project
+Status](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
+[![travis](https://img.shields.io/travis/dirmeier/modelframe/master.svg?&logo=travis)](https://travis-ci.org/dirmeier/modelframe/)
+[![codecov](https://codecov.io/gh/dirmeier/modelframe/branch/master/graph/badge.svg)](https://codecov.io/gh/dirmeier/codecov)
+[![codedacy](https://api.codacy.com/project/badge/Grade/a4cca665933a4def9c2cfc88d7bbbeae)](https://www.codacy.com/app/simon-dirmeier/modelframe?utm_source=github.com&utm_medium=referral&utm_content=dirmeier/modelframe&utm_campaign=Badge_Grade)
+[![version](https://img.shields.io/pypi/v/modelframe.svg?colorB=black&style=flat)](https://pypi.org/project/modelframe/)
 
+> Compute fixed and random effects model matrices in Python
 
-Compute 
+About
+-----
 
-Introduction
-============
+`modelframe` builds model matrices and response vectors from a given
+dataset using an `lme4`-style formula in Python.
 
-TODO
+For instance, consider the `sleepstudy` data from
+[`lme4`](https://cran.r-project.org/web/packages/lme4/index.html)
 
-Usage
-============
+``` python
+from modelframe import model_frame, load_data
 
-TODO
+sleepstudy = load_data()
+sleepstudy
+```
+
+    ##      Reaction  Days Subject
+    ## 0    249.5600     0     308
+    ## 1    258.7047     1     308
+    ## 2    250.8006     2     308
+    ## 3    321.4398     3     308
+    ## 4    356.8519     4     308
+    ## ..        ...   ...     ...
+    ## 175  329.6076     5     372
+    ## 176  334.4818     6     372
+    ## 177  343.2199     7     372
+    ## 178  369.1417     8     372
+    ## 179  364.1236     9     372
+    ## 
+    ## [180 rows x 3 columns]
+
+Computing the model matrices is then as simple as:
+
+``` python
+frame = model_frame("~ Days + (Days | Subject)", sleepstudy)
+```
+
+``` python
+frame.coef_model_matrix
+```
+
+    ##      Intercept  Days
+    ## 0          1.0     0
+    ## 1          1.0     1
+    ## 2          1.0     2
+    ## 3          1.0     3
+    ## 4          1.0     4
+    ## ..         ...   ...
+    ## 175        1.0     5
+    ## 176        1.0     6
+    ## 177        1.0     7
+    ## 178        1.0     8
+    ## 179        1.0     9
+    ## 
+    ## [180 rows x 2 columns]
+
+``` python
+frame.ranef_model_matrix
+```
+
+    ##       Intercept Days Intercept Days  ... Intercept Days Intercept Days
+    ## group       308  308       309  309  ...       371  371       372  372
+    ## 0           1.0  0.0       0.0  0.0  ...       0.0  0.0       0.0  0.0
+    ## 1           1.0  1.0       0.0  0.0  ...       0.0  0.0       0.0  0.0
+    ## 2           1.0  2.0       0.0  0.0  ...       0.0  0.0       0.0  0.0
+    ## 3           1.0  3.0       0.0  0.0  ...       0.0  0.0       0.0  0.0
+    ## 4           1.0  4.0       0.0  0.0  ...       0.0  0.0       0.0  0.0
+    ## ..          ...  ...       ...  ...  ...       ...  ...       ...  ...
+    ## 175         0.0  0.0       0.0  0.0  ...       0.0  0.0       1.0  5.0
+    ## 176         0.0  0.0       0.0  0.0  ...       0.0  0.0       1.0  6.0
+    ## 177         0.0  0.0       0.0  0.0  ...       0.0  0.0       1.0  7.0
+    ## 178         0.0  0.0       0.0  0.0  ...       0.0  0.0       1.0  8.0
+    ## 179         0.0  0.0       0.0  0.0  ...       0.0  0.0       1.0  9.0
+    ## 
+    ## [180 rows x 36 columns]
 
 Author
-======
+------
 
-- Simon Dirmeier <simon.dirmeier@web.de>
-
-
+Simon Dirmeier <a href="mailto:simon.dirmeier @ gmx.de">simon.dirmeier @
+gmx.de</a>

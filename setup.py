@@ -39,14 +39,6 @@ test_deps = [
     'flake8'
 ]
 
-doc_deps = [
-    'sphinx',
-    'sphinx_fontawesome',
-    'sphinxcontrib-fulltoc',
-    'jupyter-sphinx',
-    'nbsphinx'
-]
-
 setup(
     name='modelframe',
     version='0.0.1',
@@ -67,9 +59,7 @@ setup(
     ],
     test_requires=test_deps,
     extras_require={
-        'test': test_deps,
-        'doc': doc_deps,
-        'dev': test_deps + doc_deps
+        'test': test_deps
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

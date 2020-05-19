@@ -1,0 +1,50 @@
+---
+output:
+  md_document:
+    variant: markdown_github
+---
+
+# modelframe
+
+[![Project Status](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
+[![travis](https://img.shields.io/travis/dirmeier/modelframe/master.svg?&logo=travis)](https://travis-ci.org/dirmeier/modelframe/)
+[![codecov](https://codecov.io/gh/dirmeier/modelframe/branch/master/graph/badge.svg)](https://codecov.io/gh/dirmeier/codecov)
+[![codedacy](https://api.codacy.com/project/badge/Grade/a4cca665933a4def9c2cfc88d7bbbeae)](https://www.codacy.com/app/simon-dirmeier/modelframe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dirmeier/modelframe&amp;utm_campaign=Badge_Grade)
+[![version](https://img.shields.io/pypi/v/modelframe.svg?colorB=black&style=flat)](https://pypi.org/project/modelframe/)
+
+> Compute fixed and random effects model matrices in Python
+
+## About
+
+`modelframe` builds model matrices and response vectors from a given dataset using an `lme4`-style formula in Python.
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_condaenv("ml")
+```
+
+For instance, consider the `sleepstudy` data from [`lme4`](https://cran.r-project.org/web/packages/lme4/index.html)
+
+```{python}
+from modelframe import model_frame, load_data
+
+sleepstudy = load_data()
+sleepstudy
+```
+
+Computing the model matrices is then as simple as:
+```{python}
+frame = model_frame("~ Days + (Days | Subject)", sleepstudy)
+```
+
+```{python}
+frame.coef_model_matrix
+```
+
+```{python}
+frame.ranef_model_matrix
+```
+
+## Author
+
+Simon Dirmeier <a href="mailto:simon.dirmeier @ gmx.de">simon.dirmeier @ gmx.de</a>
