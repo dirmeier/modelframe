@@ -35,6 +35,7 @@ test_deps = [
     'pytest>=3.6.2',
     'pytest-cov',
     'pytest-pep8',
+    'unittest'
     'yapf'
 ]
 
@@ -56,6 +57,7 @@ setup(
     license='GPLv3',
     keywords=['?'],
     packages=['modelframe'],
+    include_package_data=True,
     install_requires=[
         'numpy',
         'scipy',

@@ -1,21 +1,23 @@
 language: python
 
-sudo: false
+sudo: required
+cache: pip
 
-cache: packages
+matrix:
+  include:
+  - python: 3.7
+    os: linux
+    dist: xenial
 
-python:
-  - "3.5"
+
+before_install:
+  - pip install --upgrade pip
 
 install:
-  - pip install -r requirements.txt
-  - pip install -e .
+  - pip install -e '.[test]'
   - pip install codecov
   - pip install pytest-cov
+  - pip install tox-travis
 
-script: 
-  - py.test --cov=./
-
-after_success:
-  - codecov
-
+script:
+  - tox

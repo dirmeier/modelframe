@@ -22,6 +22,29 @@
 # @email = 'simon.dirmeier@web.de'
 
 
-from modelframe.modelframe import model_frame, ModelFrame
-from modelframe.load_data import load_data
-from modelframe.ranef_term import RandomEffectTerm
+class RandomEffectTerm:
+    """
+    RandomEffectTerm contains data types for a single random effect, i.e.,
+     design matrix, number of variables, and factor matrix.
+    """
+    def __init__(self, Z, J):
+        self._Z = Z
+        self._J = J
+
+    def __str__(self):
+        return "<random effects term>"
+
+    def __repr__(self):
+        return self.__str__()
+
+    @property
+    def Z(self):
+        return self._Z
+
+    @property
+    def n_col(self):
+        return self._Z.shape[1]
+
+    @property
+    def n_terms(self):
+        return self._Z.shape[1] / self._J.shape[1]

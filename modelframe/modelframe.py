@@ -27,58 +27,149 @@ import re
 import numpy as np
 import pandas as pd
 from pandas import DataFrame
-from sklearn.preprocessing import LabelEncoder
 
-from modelframe import khatri_rao
+from modelframe.ranef_term import RandomEffectTerm
 from modelframe.terms import get_random_effects_terms, get_fixed_effects_terms
 
 
-def build_intercept_matrix(len) -> pd.Series:
-    return pd.Series(np.ones(shape=(len)), name="Intercept")
+class ModelFrame:
+    """
+    ModelFrame class that contains relevant model matrices and response vector.
+    """
+
+    def __init__(self, y, X, Z, Zlist):
+        self._y = y
+        self._X = X
+        self._Z = Z
+        self._Zlist = Zlist
+
+    def __str__(self):
+        return "<a model frame>"
+
+    def __repr__(self):
+        return self.__str__()
+
+    @property
+    def response(self):
+        """
+        Gets the response vector of the model frame
+
+        :return: a pandas Series
+        :rtype: pandas.Series
+        """
+        return self._y
+
+    @property
+    def coef_model_matrix(self):
+        """
+        Gets the model matrix for the fixed, or population-level, coefficients
+
+        :return: a pandas Series
+        :rtype: pandas.DataFrame
+        """
+        return self._X
+
+    @property
+    def ranef_model_matrix(self):
+        """
+        Gets the model matrix for the random, or group-specific, coefficients
+
+        :return: a pandas data frame
+        :rtype: pandas.DataFrame
+        """
+        return self._Z
+
+    @property
+    def ranef_list(self):
+        """
+        Gets the list of separate matrices of random effect terms
+
+        :return: a list of terms
+        :rtype: list(RandomEffectTerm)
+        """
+        return self._Zlist
 
 
-def random_effects_model_matrix(covars, factor, data):
-    J = pd.get_dummies(pd.Series(data[factor])).values
+def model_frame(formula: str, data: DataFrame) -> ModelFrame:
+    """
 
-    if len(covars) == 1 and covars[0] == "1":
-        X = build_intercept_matrix(J.shape[0]).values.reshape((J.shape[0], 1))
-    else:
-        X = fixed_effects_model_matrix(covars, data, True).values
+    Parameters
+    ----------
+    formula: str
+        an `lme4`-style formula object. More specifically, a
+        (two-sided) linear formula object separated by a ~
+    data: pandas.DataFrame
+        a data frame containing the variables named in formula
 
-    Z = pd.DataFrame(
-        khatri_rao(J.T, X.T).T,
-    )
+    Returns
+    -------
+    ModelFrame: a ModelFrame object containing model matrices and response matrix
 
-    print(Z)
+    Examples
+    -------
+    >>> from modelframe import load_data
+    >>> data = load_data()
+    >>> frame = model_frame("Reaction ~ Days + (1 | Subject)", data)
+    """
 
-    X = fixed_effects_model_matrix(covars, data, True)
-    X['grp'] = data[factor]
-    X = X[["Intercept"] + covars + ["grp"]].pivot(columns="grp").reindex()
-    X.values[np.isnan(X.values)] = 0
-    X = X.reindex(sorted(X.columns, key=lambda x: x[1]), axis=1)
-    print(X)
-    X = fixed_effects_model_matrix(["0"] + covars, data, True)
+    if "~" not in formula:
+        raise ValueError("formula needs to contain a '~'")
+    els = list(map(lambda x: x.strip(), formula.split("~")))
+    X, Z, Zlist = _compute_model_matrices(els[1], data)
+    Y = _compute_response(els[0], data)
 
-    # print(X)
+    return ModelFrame(Y, X, Z, Zlist)
 
 
-    return Z, Z.shape[1] / J.shape[1]
-
-
-def random_effects_model_matrices(terms, data):
+def _random_effects_model_matrices(terms, data):
     ranef_regex = re.compile("(.+) *\\| *(.+)")
     Zlist = []
-    n_terms_list = []
+    Z = []
     for el in terms:
         reg = ranef_regex.match(el)
         covars, factor = reg.group(1), reg.group(2)
         covars = get_fixed_effects_terms(covars)
-        Zi, n_terms = random_effects_model_matrix(covars, factor, data)
-        Zlist.append(Zi)
-        n_terms_list.append(n_terms)
+        ranef = _random_effects_model_matrix(covars, factor, data)
+        Zlist.append(ranef)
+        Z.append(ranef.Z)
+    if len(Z):
+        Z = pd.concat(Z, axis=1)
+        return Z, Zlist
+    return None, None
 
 
-def build_series(rhs, data, error_no_categorical):
+def _random_effects_model_matrix(covars, factor, data):
+    J = pd.get_dummies(pd.Series(data[factor])).values
+
+    Z, covars = _fixed_effects_model_matrix(covars, data, True)
+    Z['group'] = data[factor]
+
+    Z = Z[covars + ["group"]].pivot(columns="group").reindex()
+    Z.values[np.isnan(Z.values)] = 0
+    Z = Z.reindex(sorted(Z.columns, key=lambda x: x[1]), axis=1)
+
+    return RandomEffectTerm(Z, J)
+
+
+def _fixed_effects_model_matrix(terms, data, error_no_categorical=False):
+    X = []
+    for el in terms:
+        if el != "0" and el != "1":
+            X += [_build_series(el, data, error_no_categorical)]
+    if "0" not in terms:
+        X.insert(0, _build_intercept_matrix(data.shape[0]))
+
+    if len(X):
+        X = pd.concat(X, axis=1)
+        return X, list(X.columns)
+    return None, None
+
+
+def _build_intercept_matrix(leng) -> pd.Series:
+    return pd.Series(np.ones(shape=leng), name="Intercept")
+
+
+def _build_series(rhs, data, error_no_categorical):
     el = rhs.strip().replace("(", "").replace(")", "")
     series = data[el]
     if series.dtype == "int64" or series.dtype == "float64":
@@ -93,35 +184,23 @@ def build_series(rhs, data, error_no_categorical):
         raise ValueError(f"dtype '{series.dtype}' of column '{el}' is not supported")
 
 
-def fixed_effects_model_matrix(terms, data, error_no_categorical=False):
-    X = []
-    for el in terms:
-        if el != "0":
-            X += [build_series(el, data, error_no_categorical)]
-    if "0" not in terms:
-        X.insert(0, build_intercept_matrix(data.shape[0]))
+def _compute_model_matrices(rhs, data):
+    if rhs.strip() == "":
+        return None, None, None
 
-    return pd.concat(X, axis=1)
-
-
-def compute_model_matrices(rhs, data):
     coef_terms = get_fixed_effects_terms(rhs)
     ranef_terms = get_random_effects_terms(rhs)
 
-    X = fixed_effects_model_matrix(coef_terms, data)
-    Z = random_effects_model_matrices(ranef_terms, data)
-    # print(Z)
+    X, _ = _fixed_effects_model_matrix(coef_terms, data)
+    Z, Zlist = _random_effects_model_matrices(ranef_terms, data)
 
-    # return {
-    #     "X": X,
-    #     "Z": Z
-    # }
+    return X, Z, Zlist
 
 
-def model_frame(formula: str, data: DataFrame):
-    if "~" not in formula:
-        raise ValueError("formula needs to contain a '~'")
-    els = list(map(lambda x: x.strip(), formula.split("~")))
-    compute_model_matrices(els[1], data)
-
-
+def _compute_response(lhs, data):
+    lhs = lhs.strip()
+    if lhs == "":
+        return None
+    if lhs in data.columns:
+        return data[lhs]
+    raise ValueError(f"column '{lhs}' does not exist in data")

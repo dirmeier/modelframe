@@ -1,3 +1,27 @@
+# modelframe: Compute fixed and random effects model matrices in Python
+#
+# Copyright (C) Simon Dirmeier
+#
+# This file is part of modelframe.
+#
+# modelframe is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# modelframe is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with modelframe. If not, see <http://www.gnu.org/licenses/>.
+#
+#
+# @author = 'Simon Dirmeier'
+# @email = 'simon.dirmeier@web.de'
+
+
 import re
 
 
@@ -21,9 +45,11 @@ def get_fixed_effects_terms(rhs):
 
     for ex in ext:
         rhs = _coef_strip(rhs, ex)
+    els = rhs.split("+")
+    if els[0] == "" or (len(els) == 1 and "|" in els[0]):
+        els = ["1"]
 
     terms = []
-    els = rhs.split("+")
     for el in els:
         el = el.strip()
         if el != "" and "|" not in el:
