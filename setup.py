@@ -41,7 +41,7 @@ test_deps = [
 
 setup(
     name='modelframe',
-    version='0.0.1',
+    version='0.1.0',
     description='Compute fixed and random effects model matrices in Python',
     long_description=readme(),
     url='https://github.com/dirmeier/modelframe',

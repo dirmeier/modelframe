@@ -13,4 +13,4 @@ dataset using ``lme4``-style formulas in Python.
 Author
 ======
 
-Simon Dirmeier `simon.dirmeier at bsse.ethz.ch <mailto:simon.dirmeier@bsse.ethz.ch>`_.
+Simon Dirmeier `simon.dirmeier at web.de <mailto:simon.dirmeier @ web.de>`_.
