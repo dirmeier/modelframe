@@ -14,10 +14,8 @@ About
 -----
 
 `modelframe` builds model matrices and response vectors from a given
-dataset using an `lme4`-style formula in Python.
-
-For instance, consider the `sleepstudy` data from
-[`lme4`](https://cran.r-project.org/web/packages/lme4/index.html)
+dataset using `lme4`-style formulas in Python. For instance, consider the `sleepstudy` data from
+[`lme4`](https://cran.r-project.org/web/packages/lme4/index.html):
 
 ``` python
 from modelframe import model_frame, load_data
@@ -47,6 +45,8 @@ Computing the model matrices is then as simple as:
 frame = model_frame("~ Days + (Days | Subject)", sleepstudy)
 ```
 
+The fixed effects model matrix:
+
 ``` python
 frame.coef_model_matrix
 ```
@@ -65,6 +65,9 @@ frame.coef_model_matrix
     ## 179        1.0     9
     ## 
     ## [180 rows x 2 columns]
+
+
+The random effects model matrix:
 
 ``` python
 frame.ranef_model_matrix
@@ -89,5 +92,4 @@ frame.ranef_model_matrix
 Author
 ------
 
-Simon Dirmeier <a href="mailto:simon.dirmeier @ gmx.de">simon.dirmeier @
-gmx.de</a>
+Simon Dirmeier <a href="mailto:simon.dirmeier @ gmx.de">simon.dirmeier @ gmx.de</a>

@@ -8,7 +8,7 @@ About
 =====
 
 ``modelframe`` builds model matrices and response vectors from a given
-dataset using an ``lme4``-style formula in Python.
+dataset using ``lme4``-style formulas in Python.
 
 Author
 ======
