@@ -89,6 +89,23 @@ frame.ranef_model_matrix
     ## 
     ## [180 rows x 36 columns]
 
+Installation
+------------
+
+You can install `modelframe` either from PyPI using:
+
+```bash
+pip install modelframe
+```
+
+or using the latest GitHub [release](https://github.com/dirmeier/modelframe/releases/):
+
+```bash
+python -m pip install git+https://github.com/dirmeier/modelframe.git
+```
+
+
+
 Author
 ------
 

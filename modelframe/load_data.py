@@ -47,9 +47,9 @@ def load_data():
     import os
     import pandas as pd
 
-    dir, _ = os.path.split(__file__)
+    dr, _ = os.path.split(__file__)
     df = pd.read_csv(
-        os.path.join(dir, "data", "sleepstudy.csv"),
+        os.path.join(dr, "data", "sleepstudy.csv"),
         dtype={"Reaction": "float64", "Days": "int64", "Subject": "category"},
     )
     return df
