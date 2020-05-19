@@ -4,8 +4,8 @@ modelframe
 [![Project
 Status](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
 [![travis](https://img.shields.io/travis/dirmeier/modelframe/master.svg?&logo=travis)](https://travis-ci.org/dirmeier/modelframe/)
-[![codecov](https://codecov.io/gh/dirmeier/modelframe/branch/master/graph/badge.svg)](https://codecov.io/gh/dirmeier/codecov)
-[![codedacy](https://api.codacy.com/project/badge/Grade/a4cca665933a4def9c2cfc88d7bbbeae)](https://www.codacy.com/app/simon-dirmeier/modelframe?utm_source=github.com&utm_medium=referral&utm_content=dirmeier/modelframe&utm_campaign=Badge_Grade)
+[![codecov](https://codecov.io/gh/dirmeier/modelframe/branch/master/graph/badge.svg)](https://codecov.io/gh/dirmeier/modelframe)
+[![codacy](https://app.codacy.com/project/badge/Grade/c101def3b1d34481a3b72109852f4f8d)](https://www.codacy.com/manual/simon-dirmeier/modelframe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dirmeier/modelframe&amp;utm_campaign=Badge_Grade)
 [![version](https://img.shields.io/pypi/v/modelframe.svg?colorB=black&style=flat)](https://pypi.org/project/modelframe/)
 
 > Compute fixed and random effects model matrices in Python

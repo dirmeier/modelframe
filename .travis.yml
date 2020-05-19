@@ -21,3 +21,7 @@ install:
 
 script:
   - tox
+  - py.test --cov=./
+
+after_success:
+  - codecov
