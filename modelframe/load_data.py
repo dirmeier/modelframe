@@ -24,31 +24,21 @@
 
 def load_data():
     """
-    Load an example data set: the sleepstudy data from the `lme4` R-package, published in:
-
-    @article{,
-       author = {Douglas Bates and Martin Mächler and Ben Bolker and Steve Walker},
-       title = {Fitting Linear Mixed-Effects Models Using lme4},
-       journal = {Journal of Statistical Software},
-       volume = {67},
-       number = {1},
-       year = {2015},
-       issn = {1548-7660},
-       pages = {1--48},
-       doi = {10.18637/jss.v067.i01},
-       url = {https://www.jstatsoft.org/v067/i01}
-    }
+    Load an example data set: the sleepstudy data from the `lme4` R-package.
 
     Returns
     -------
-    df: pandas.DataFrame
+    pandas.DataFrame
         returns an example data set
 
     References
     ----------
-
-
+    .. [1] D. Bates and M. Mächler and B, Bolker and S. Walker,
+       "Fitting Linear Mixed-Effects Models Using lme4",
+       Journal of Statistical Software, vol. 67,
+       pp. 1-48, 2015.
     """
+
     import os
     import pandas as pd
 

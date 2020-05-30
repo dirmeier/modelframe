@@ -53,8 +53,10 @@ class ModelFrame:
         """
         Gets the response vector of the model frame
 
-        :return: a pandas Series
-        :rtype: pandas.Series
+        Returns
+        -------
+        pandas.Series
+            returns the response vector
         """
         return self._y
 
@@ -63,8 +65,10 @@ class ModelFrame:
         """
         Gets the model matrix for the fixed, or population-level, coefficients
 
-        :return: a pandas Series
-        :rtype: pandas.DataFrame
+        Returns
+        -------
+        pandas.DataFrame
+            returns the model matrix for the population-level coefficients
         """
         return self._X
 
@@ -73,8 +77,10 @@ class ModelFrame:
         """
         Gets the model matrix for the random, or group-specific, coefficients
 
-        :return: a pandas data frame
-        :rtype: pandas.DataFrame
+        Returns
+        -------
+        pandas.DataFrame
+            returns the model matrix for the group-level coefficients
         """
         return self._Z
 
@@ -83,14 +89,17 @@ class ModelFrame:
         """
         Gets the list of separate matrices of random effect terms
 
-        :return: a list of terms
-        :rtype: list(RandomEffectTerm)
+         Returns
+        -------
+        list: RandomEffectTerm
+            returns the list of separate RandomEffectTerms
         """
         return self._Zlist
 
 
 def model_frame(formula: str, data: DataFrame) -> ModelFrame:
     """
+    Compute the model frame of a specified formula from a given data set.
 
     Parameters
     ----------
@@ -102,10 +111,11 @@ def model_frame(formula: str, data: DataFrame) -> ModelFrame:
 
     Returns
     -------
-    ModelFrame: a ModelFrame object containing model matrices and response matrix
+    ModelFrame
+        a ModelFrame object containing model matrices and response matrix
 
     Examples
-    -------
+    --------
     >>> from modelframe import load_data
     >>> data = load_data()
     >>> frame = model_frame("Reaction ~ Days + (1 | Subject)", data)
