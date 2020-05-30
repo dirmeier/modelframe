@@ -58,6 +58,7 @@ class ModelFrame:
         pandas.Series
             returns the response vector
         """
+
         return self._y
 
     @property
@@ -70,6 +71,7 @@ class ModelFrame:
         pandas.DataFrame
             returns the model matrix for the population-level coefficients
         """
+
         return self._X
 
     @property
@@ -82,6 +84,7 @@ class ModelFrame:
         pandas.DataFrame
             returns the model matrix for the group-level coefficients
         """
+
         return self._Z
 
     @property
@@ -94,6 +97,7 @@ class ModelFrame:
         list: RandomEffectTerm
             returns the list of separate RandomEffectTerms
         """
+
         return self._Zlist
 
 
@@ -192,7 +196,9 @@ def _build_series(rhs, data, error_no_categorical):
         dum.columns = [el + str(x) for x in dum.columns]
         return dum
     else:
-        raise ValueError(f"dtype '{series.dtype}' of column '{el}' is not supported")
+        raise ValueError(
+            f"dtype '{series.dtype}' of column '{el}' is not supported"
+        )
 
 
 def _compute_model_matrices(rhs, data):

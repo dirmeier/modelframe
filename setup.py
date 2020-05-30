@@ -31,25 +31,19 @@ def readme():
 
 
 test_deps = [
-    'black',
-    'coverage',
-    'pytest>=3.6.2',
-    'pytest-cov',
-    'pytest-pep8',
-    'flake8'
+    'tox'
 ]
 
 setup(
     name='modelframe',
-    version='0.1.0',
+    version='0.1.1',
     description='Compute fixed and random effects model matrices in Python',
     long_description=readme(),
     url='https://github.com/dirmeier/modelframe',
-    download_url='https://github.com/dirmeier/modelframe/tarball/0.0.1',
     author='Simon Dirmeier',
     author_email='simon.dirmeier@web.de',
     license='GPLv3',
-    keywords=['?'],
+    keywords=['modelframe'],
     packages=['modelframe'],
     include_package_data=True,
     install_requires=[

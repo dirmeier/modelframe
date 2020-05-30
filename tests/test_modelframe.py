@@ -31,7 +31,6 @@ from modelframe import model_frame, load_data
 
 
 class TestModelFrame(unittest.TestCase):
-
     @classmethod
     def setUpClass(cls):
         cls.data = load_data()
@@ -39,17 +38,22 @@ class TestModelFrame(unittest.TestCase):
     def test_load(self):
         data = load_data()
         assert data.shape == (180, 3)
-        assert sorted(list(data.columns)) == sorted(["Days", "Reaction", "Subject"])
+        assert sorted(list(data.columns)) == sorted(
+            ["Days", "Reaction", "Subject"]
+        )
         assert data.Days.dtype == "int64"
         assert data.Reaction.dtype == "float64"
         assert data.Subject.dtype == "category"
 
     def test_full_formula(self):
         frame = model_frame("Reaction ~ Days + (Days | Subject)", self.data)
-        assert frame.response.shape == (180, )
+        assert frame.response.shape == (180,)
         assert len(frame.ranef_list) == 1
         assert frame.coef_model_matrix.shape == (180, 2)
-        assert frame.ranef_model_matrix.shape == (180, 2 * len(np.unique(self.data["Subject"])))
+        assert frame.ranef_model_matrix.shape == (
+            180,
+            2 * len(np.unique(self.data["Subject"])),
+        )
 
     def test_single_fixed_variable(self):
         frame = model_frame("~ Days", self.data)
@@ -62,31 +66,49 @@ class TestModelFrame(unittest.TestCase):
         frame = model_frame("~ 1 | Subject", self.data)
         assert frame.response is None
         assert frame.coef_model_matrix.shape == (180, 1)
-        assert frame.ranef_model_matrix.shape == (180, len(np.unique(self.data["Subject"])))
+        assert frame.ranef_model_matrix.shape == (
+            180,
+            len(np.unique(self.data["Subject"])),
+        )
 
     def test_combination_of_variables(self):
         frame = model_frame("~ Days + (1 | Subject)", self.data)
         assert frame.response is None
         assert frame.coef_model_matrix.shape == (180, 2)
-        assert frame.ranef_model_matrix.shape == (180, len(np.unique(self.data["Subject"])))
+        assert frame.ranef_model_matrix.shape == (
+            180,
+            len(np.unique(self.data["Subject"])),
+        )
 
     def test_another_combination_of_variables(self):
         frame = model_frame("~ Days + (Days | Subject)", self.data)
         assert frame.response is None
         assert frame.coef_model_matrix.shape == (180, 2)
-        assert frame.ranef_model_matrix.shape == (180, 2 * len(np.unique(self.data["Subject"])))
+        assert frame.ranef_model_matrix.shape == (
+            180,
+            2 * len(np.unique(self.data["Subject"])),
+        )
 
     def test_yet_another_combination_of_variables(self):
         frame = model_frame("~ Subject + Days + (Days | Subject)", self.data)
         assert frame.response is None
-        assert frame.coef_model_matrix.shape == (180, 2 + len(np.unique(self.data["Subject"])) - 1)
-        assert frame.ranef_model_matrix.shape == (180, 2 * len(np.unique(self.data["Subject"])))
+        assert frame.coef_model_matrix.shape == (
+            180,
+            2 + len(np.unique(self.data["Subject"])) - 1,
+        )
+        assert frame.ranef_model_matrix.shape == (
+            180,
+            2 * len(np.unique(self.data["Subject"])),
+        )
 
     def test_final_combination_of_variables(self):
         frame = model_frame("~ (Days + Reaction | Subject)", self.data)
         assert frame.response is None
         assert frame.coef_model_matrix.shape == (180, 1)
-        assert frame.ranef_model_matrix.shape == (180, 3 * len(np.unique(self.data["Subject"])))
+        assert frame.ranef_model_matrix.shape == (
+            180,
+            3 * len(np.unique(self.data["Subject"])),
+        )
 
     def test_response(self):
         frame = model_frame("Reaction ~ ", self.data)
