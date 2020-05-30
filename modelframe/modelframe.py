@@ -178,7 +178,9 @@ def _build_series(rhs, data, error_no_categorical):
     elif series.dtype == "category" or series.dtype == "category":
         if error_no_categorical:
             raise ValueError("no categorical variables implemented yet")
-        return pd.get_dummies(series, drop_first=True)
+        dum = pd.get_dummies(series, drop_first=True)
+        dum.columns = [el + str(x) for x in dum.columns]
+        return dum
     else:
         raise ValueError(f"dtype '{series.dtype}' of column '{el}' is not supported")
 
