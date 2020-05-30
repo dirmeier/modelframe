@@ -24,8 +24,15 @@
 
 class RandomEffectTerm:
     """
-    RandomEffectTerm contains data types for a single random effect, i.e.,
-     design matrix, number of variables, and factor matrix.
+    RandomEffectTerm contains data types for a single random effect.
+
+    Attributes
+    ----------
+    Z : pandas.DataFrame
+        design matrix of random effect with column names
+    J : numpy.ndarray
+        matrix of indicator columns for the different levels of the random
+        effect
     """
 
     def __init__(self, Z, J):
@@ -40,12 +47,37 @@ class RandomEffectTerm:
 
     @property
     def Z(self):
+        """
+        Getter for random effects matrix Z.
+
+        Returns
+        -------
+        pandas.DataFrame
+            random effects design matrix
+        """
+
         return self._Z
 
     @property
-    def n_col(self):
-        return self._Z.shape[1]
+    def n_levels(self):
+        """
+        Returns the number of levels of the random effect.
+
+        Returns
+        -------
+        int
+            the number of different levels the random effect has
+        """
+        return int(self._Z.shape[1])
 
     @property
     def n_terms(self):
-        return self._Z.shape[1] / self._J.shape[1]
+        """
+        Returns the number of coefficients of the random effect.
+
+        Returns
+        -------
+        int
+            the number of different coefficients the random effect has
+        """
+        return int(self._Z.shape[1] / self._J.shape[1])

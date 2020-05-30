@@ -13,6 +13,6 @@ from modelframe import model_frame
 wine = data("wine")
 
 
-frame = model_frame("~0 + temperature + contact + bottle", wine)
+frame = model_frame("~0 + temperature + contact + bottle + (1 | judge)", wine)
 
 print(frame.coef_model_matrix)
