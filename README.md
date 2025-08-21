@@ -1,13 +1,6 @@
 modelframe
 ==========
 
-[![Project
-Status](http://www.repostatus.org/badges/latest/concept.svg)](http://www.repostatus.org/#concept)
-[![travis](https://img.shields.io/travis/dirmeier/modelframe/master.svg?&logo=travis)](https://travis-ci.org/dirmeier/modelframe/)
-[![codecov](https://codecov.io/gh/dirmeier/modelframe/branch/master/graph/badge.svg)](https://codecov.io/gh/dirmeier/modelframe)
-[![codacy](https://app.codacy.com/project/badge/Grade/c101def3b1d34481a3b72109852f4f8d)](https://www.codacy.com/manual/simon-dirmeier/modelframe?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dirmeier/modelframe&amp;utm_campaign=Badge_Grade)
-[![version](https://img.shields.io/pypi/v/modelframe.svg?colorB=black&style=flat)](https://pypi.org/project/modelframe/)
-
 > Compute fixed and random effects model matrices in Python
 
 About
@@ -109,4 +102,6 @@ python -m pip install git+https://github.com/dirmeier/modelframe.git
 Author
 ------
 
-Simon Dirmeier <a href="mailto:simon.dirmeier @ gmx.de">simon.dirmeier @ gmx.de</a>
+Simon Dirmeier <a href="mailto:simd23@pm.me">simd23 @ pm dot me</a>
+
+
